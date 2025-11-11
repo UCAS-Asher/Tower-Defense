@@ -31,6 +31,7 @@ class User():
             return False
 
 
+#Enemies
 class Enemy(ABC):
     def __init__(self, hp, max_hp, speed, image):
         self.hp = hp
@@ -67,3 +68,139 @@ class Enemy2(Enemy):
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
+
+class Enemy3(Enemy):
+    def __init__(self, hp = 500, max_hp = 500, speed = 0.4, image = ''):
+        self.hp = hp
+        self.max_hp = max_hp
+        self.speed = speed
+        self.image = image
+    
+    def give_money(self, user):
+        user.money += self.max_hp*0.5
+
+class Enemy4(Enemy):
+    def __init__(self, hp = 1500, max_hp = 1500, speed = 0.35, image = ''):
+        self.hp = hp
+        self.max_hp = max_hp
+        self.speed = speed
+        self.image = image
+    
+    def give_money(self, user):
+        user.money += self.max_hp*0.5
+
+class Boss(Enemy):
+    def __init__(self, hp = 15000, max_hp = 15000, speed = 0.4, image = ''):
+        self.hp = hp
+        self.max_hp = max_hp
+        self.speed = speed
+        self.image = image
+    
+    def give_money(self, user):
+        user.money += self.max_hp*0.5
+
+
+#Projectiles
+class Projectile():
+    def __init__(self, image, sound):
+        self.image = image
+        self.sound = sound
+
+    def shoot(self):
+        pass
+
+
+
+#Towers
+class Tower(ABC):
+    def __init__(self, damage, hit_speed, cost, image):
+        self.damage = damage
+        self.hit_speed = hit_speed
+        self.cost = cost
+        self.image = image
+    
+    def shoot(self):
+        pass
+        
+    @abstractmethod
+    def upgrade(self):
+        pass
+
+class Tower1(Tower):
+    def __init__(self, damage=25, hit_speed = 1, cost = 50, image = '', bullet = '', sound = ''):
+        self.damage = damage
+        self.hit_speed = hit_speed
+        self.cost = cost
+        self.image = image
+        self.projectile = Projectile(bullet, sound)
+    
+    def shoot(self):
+        pass
+        
+    def upgrade(self):
+        pass
+
+class Tower2(Tower):
+    def __init__(self, damage=35, hit_speed = 0.75, cost = 125, image = ''):
+        self.damage = damage
+        self.hit_speed = hit_speed
+        self.cost = cost
+        self.image = image
+    
+    def shoot(self):
+        pass
+        
+    def upgrade(self):
+        pass
+
+class Tower3(Tower):
+    def __init__(self, damage=75, hit_speed = 0.5, cost = 500, image = ''):
+        self.damage = damage
+        self.hit_speed = hit_speed
+        self.cost = cost
+        self.image = image
+    
+    def shoot(self):
+        pass
+        
+    def upgrade(self):
+        pass
+
+class Tower4(Tower):
+    def __init__(self, damage=350, hit_speed = 1.75, cost = 800, image = ''):
+        self.damage = damage
+        self.hit_speed = hit_speed
+        self.cost = cost
+        self.image = image
+    
+    def shoot(self):
+        pass
+        
+    def upgrade(self):
+        pass
+
+class Tower5(Tower):
+    def __init__(self, damage=125, hit_speed = 0.4, cost = 1250, image = ''):
+        self.damage = damage
+        self.hit_speed = hit_speed
+        self.cost = cost
+        self.image = image
+    
+    def shoot(self):
+        pass
+        
+    def upgrade(self):
+        pass
+
+class Tower6(Tower):
+    def __init__(self, damage=250, hit_speed = 0.5, cost = 2500, image = ''):
+        self.damage = damage
+        self.hit_speed = hit_speed
+        self.cost = cost
+        self.image = image
+    
+    def shoot(self):
+        pass
+        
+    def upgrade(self):
+        pass
