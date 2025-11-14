@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 class Map():
-    def __init__(self, x_spots = 16, y_spots = 12, towers = [], enemies = [], wave = 0):
+    def __init__(self, x_spots = 16, y_spots = 16, towers = [], enemies = [], wave = 0):
         self.image = ""
         self.music = ""
         self.x_spots = x_spots
