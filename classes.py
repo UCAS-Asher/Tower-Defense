@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-
+import pygame
+from pygame import mixer
 class Map():
     def __init__(self, x_spots = 16, y_spots = 16, towers = [], enemies = [], wave = 0):
         self.image = ""
@@ -164,7 +165,7 @@ class Tower1(Tower):
         self.damage = damage
         self.hit_speed = hit_speed
         self.cost = cost
-        self.image = image
+        self.image = pygame.transform.scale(pygame.image.load('"resources/towers/broken_heart.png"'))
         self.projectile = Projectile(bullet, sound)
     
     def shoot(self):

@@ -1,5 +1,7 @@
 #AW Final Project Code
 
+from classes import *
+
 import pygame
 import random
 import math
@@ -22,6 +24,7 @@ pygame_icon = pygame.image.load('resources/background/icon.png')
 pygame.display.set_icon(pygame_icon)
 
 running = True
+game = Map()
 
 while running:
     screen.fill((0,0,0))
