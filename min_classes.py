@@ -101,16 +101,6 @@ class Boss(Enemy):
         user.money += self.max_hp*0.5
 
 
-#Projectiles
-class Projectile():
-    def __init__(self, x, y, image, sound):
-        self.image = image
-        self.sound = sound
-
-    def shoot(self, enemy):
-        pass
-
-
 
 #Towers
 class Tower(ABC):
@@ -121,9 +111,6 @@ class Tower(ABC):
         self.x = x
         self.y = y
         
-    
-    def shoot(self, enemy):
-        self.projectile.shoot(enemy)
         
     def upgrade(self, user):
         if user.money >= self.cost*2:
@@ -167,9 +154,6 @@ class Tower1(Tower):
         self.hit_speed = hit_speed
         self.cost = cost
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/broken_heart.png'), (60,60))
-        self.bullet = pygame.transform.scale(pygame.image.load('resources/bullets/wilted_rose.png'), (30,30))
-        self.sound = pygame.mixer.Sound('')
-        self.projectile = Projectile(self.bullet, self.sound)
         self.x = x
         self.y = y
     
@@ -183,9 +167,6 @@ class Tower2(Tower):
         self.hit_speed = hit_speed
         self.cost = cost
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/chickenstarsguy.png'), (60,60))
-        self.bullet = pygame.transform.scale(pygame.image.load('resources/bullets/chicken_star.png'), (30,30))
-        self.sound = pygame.mixer.Sound('')
-        self.projectile = Projectile(self.bullet, self.sound)
         self.x = x
         self.y = y
     
@@ -199,9 +180,6 @@ class Tower3(Tower):
         self.hit_speed = hit_speed
         self.cost = cost
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/einstein.png'), (60,60))
-        self.bullet = pygame.transform.scale(pygame.image.load('resources/bullets/calculator.png'), (30,30))
-        self.sound = pygame.mixer.Sound('')
-        self.projectile = Projectile(self.bullet, self.sound)
         self.x = x
         self.y = y
     
@@ -215,9 +193,6 @@ class Tower4(Tower):
         self.hit_speed = hit_speed
         self.cost = cost
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/61guy.png'), (60,60))
-        self.bullet = pygame.transform.scale(pygame.image.load('resources/bullets/swan.png'), (30,30))
-        self.sound = pygame.mixer.Sound('')
-        self.projectile = Projectile(self.bullet, self.sound)
         self.x = x
         self.y = y
     
@@ -231,9 +206,6 @@ class Tower5(Tower):
         self.hit_speed = hit_speed
         self.cost = cost
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/kendrick.png'), (60,60))
-        self.bullet = pygame.transform.scale(pygame.image.load('resources/bullets/mustard.png'), (30,30))
-        self.sound = pygame.mixer.Sound('')
-        self.projectile = Projectile(self.bullet, self.sound)
         self.x = x
         self.y = y
     
@@ -247,9 +219,6 @@ class Tower6(Tower):
         self.hit_speed = hit_speed
         self.cost = cost
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/mason.png'), (60,60))
-        self.bullet = pygame.transform.scale(pygame.image.load('resources/bullets/67.png'), (30,30))
-        self.sound = pygame.mixer.Sound('')
-        self.projectile = Projectile(self.bullet, self.sound)
         self.x = x
         self.y = y
     
