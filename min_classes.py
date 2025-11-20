@@ -34,11 +34,10 @@ class User():
 
 #Enemies
 class Enemy(ABC):
-    def __init__(self, hp, max_hp, speed, image):
+    def __init__(self, hp, max_hp, speed):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
-        self.image = image
 
     
     def hit_zone(self, user):
@@ -51,11 +50,11 @@ class Enemy(ABC):
 
 
 class Enemy1(Enemy):
-    def __init__(self, hp = 100, max_hp = 100, speed = 0.3, image = ''):
+    def __init__(self, hp = 100, max_hp = 100, speed = 0.3):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
-        self.image = image
+        self.image = 
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
