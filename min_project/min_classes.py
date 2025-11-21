@@ -3,7 +3,7 @@ import pygame
 from pygame import mixer
 class Map():
     def __init__(self, x_spots = 16, y_spots = 16, towers = [], enemies = [], wave = 0):
-        self.image = ""
+        self.image = pygame.transform.scale(pygame.image.load('resources/background/map.png'), (960,960))
         self.music = ""
         self.x_spots = x_spots
         self.y_spots = y_spots
@@ -11,8 +11,9 @@ class Map():
         self.enemies = enemies
         self.wave = wave
 
-    def place_tower(self):
-        pass
+    def place_tower(self, screen, tower):
+        self.towers.append(tower)
+        screen.blit(tower.image, (tower.x,tower.y))
 
     def spawn_enemy(self):
         pass
@@ -54,7 +55,7 @@ class Enemy1(Enemy):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
-        self.image = 
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy1.png'), (45,45))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
@@ -64,17 +65,17 @@ class Enemy2(Enemy):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
-        self.image = image
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy2.png'), (50,50))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
 
 class Enemy3(Enemy):
-    def __init__(self, hp = 500, max_hp = 500, speed = 0.4, image = ''):
+    def __init__(self, hp = 500, max_hp = 500, speed = 0.4):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
-        self.image = image
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy3.png'), (55,55))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
@@ -84,7 +85,7 @@ class Enemy4(Enemy):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
-        self.image = image
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy4.png'), (60,60))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
@@ -94,7 +95,7 @@ class Boss(Enemy):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
-        self.image = image
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/boss.png'), (65,65))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
