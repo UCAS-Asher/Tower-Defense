@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import pygame
 from pygame import mixer
+
 class Map():
     def __init__(self, x_spots = 16, y_spots = 16, towers = [], enemies = [], wave = 0):
         self.image = pygame.transform.scale(pygame.image.load('resources/background/map.png'), (960,960))
@@ -11,7 +12,8 @@ class Map():
         self.enemies = enemies
         self.wave = wave
 
-    def place_tower(self, screen, tower):
+    def place_tower(self, screen):
+        
         self.towers.append(tower)
         screen.blit(tower.image, (tower.x,tower.y))
 

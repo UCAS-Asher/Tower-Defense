@@ -39,7 +39,6 @@ while running:
         if event.type == pygame.KEYDOWN:
             if keys[pygame.K_e]:
                 state = True
-                game.place_tower()
         if event.type == pygame.KEYUP:
             if keys[pygame.K_e]:
                 if state == True:
