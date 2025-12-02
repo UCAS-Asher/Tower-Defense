@@ -3,14 +3,12 @@ import pygame
 from pygame import mixer
 
 class Map():
-    def __init__(self, x_spots = 16, y_spots = 16, towers = [], enemies = [], wave = 0):
+    def __init__(self, x_spots = 16, y_spots = 16):
         self.image = pygame.transform.scale(pygame.image.load('resources/background/map.png'), (960,960))
         self.music = ""
         self.x_spots = x_spots
         self.y_spots = y_spots
-        self.towers = towers
-        self.enemies = enemies
-        self.wave = wave
+
 
     def place_tower(self, screen):
         
@@ -20,7 +18,7 @@ class Map():
     def spawn_enemy(self):
         pass
 
-    def wave_money(self, user):
+    def wave_money(self, wave):
         user.money += ((self.wave*15) + 10)
 
 class User():
