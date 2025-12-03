@@ -31,7 +31,7 @@ enemies = []
 enemies_spawn = []
 wave_start = False
 wave_spawn = False
-last_spawn = pygame.time.get_ticks()
+last_spawn = 0
 
 
 running = True
@@ -43,30 +43,31 @@ while running:
     wave_text = wave_font.render(f"Wave: {wave}", True, (0, 0, 0))
     screen.blit(wave_text, (10, 10))
     
-    time_passed = pygame.time.get_ticks()
+    current_time = pygame.time.get_ticks()
 
-    if time_passed > 15000 and wave_start == False:
+    if current_time > 15000 and wave_start == False:
         wave +=1
         wave_start = True
 
     if wave > 0 and wave > 10 and wave_spawn == False:
-        for x in range(0, wave):
+        for x in range(wave):
             enemies_spawn.append(Enemy1())
     elif wave > 9 and wave > 20 and wave_spawn == False:
-        for x in range(0, wave):
+        for x in range(wave):
             enemies_spawn.append(Enemy2())
     elif wave > 19 and wave > 30 and wave_spawn == False:
-        for x in range(0, wave):
+        for x in range(wave):
             enemies_spawn.append(Enemy3())
     elif wave > 29 and wave > 40 and wave_spawn == False:
-        for x in range(0, wave):
+        for x in range(wave):
             enemies_spawn.append(Enemy4())
     elif wave == 40 and wave_spawn == False:
             enemies_spawn.append(Boss())
 
-    if time_passed - last_spawn > 2000 and len(enemies_spawn) != 0:
+    if current_time - last_spawn > 2000 and len(enemies_spawn) != 0:
         enemies.append(enemies_spawn[0])
-        screen.blit(enemies_spawn[0], (438, 864))
+        screen.blit(enemies_spawn[0].image, (438, 864))
+        enemies_spawn.pop(enemies_spawn[0])
         last_spawn = pygame.time.get_ticks()
     
 
