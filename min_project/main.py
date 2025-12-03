@@ -27,6 +27,7 @@ pygame.display.set_icon(pygame_icon)
 
 
 wave = 0
+money = 75
 enemies = []
 enemies_spawn = []
 wave_start = False
@@ -39,13 +40,17 @@ running = True
 while running:
     screen.fill((0,0,0))
     screen.blit(background, (0, 0))
-    wave_font = pygame.font.Font('freesansbold.ttf', 32)
-    wave_text = wave_font.render(f"Wave: {wave}", True, (0, 0, 0))
+    display_font = pygame.font.Font('freesansbold.ttf', 32)
+    wave_text = display_font.render(f"Wave: {wave}", True, (0, 0, 0))
+    money_text = display_font.render(f"Money: {money}", True, (0, 200, 0))
     screen.blit(wave_text, (10, 10))
+    screen.blit(money_text, (650, 10))
     
+    #for delays and stuff
     current_time = pygame.time.get_ticks()
 
-    if current_time > 15000 and wave_start == False:
+    #delay before first wave
+    if current_time > 5000 and wave_start == False:
         wave +=1
         wave_start = True
 
@@ -66,23 +71,20 @@ while running:
 
     if current_time - last_spawn > 2000 and len(enemies_spawn) != 0:
         enemies.append(enemies_spawn[0])
-        screen.blit(enemies_spawn[0].image, (438, 864))
         enemies_spawn.pop(enemies_spawn[0])
         last_spawn = pygame.time.get_ticks()
     
+    for enemy in enemies:
+        enemy.move()
+        enemy.x = enemy.x + enemy.x_change
+        enemy.y = enemy.y + enemy.y_change
+        screen.blit(enemy.image, (enemy.x, enemy.y))
 
     #loop events
     for event in pygame.event.get():
         keys = pygame.key.get_pressed()
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
-            if keys[pygame.K_e]:
-                state = True
-        if event.type == pygame.KEYUP:
-            if keys[pygame.K_e]:
-                if state == True:
-                    game.place_tower(screen, )
-                    state = False
+
         
     pygame.display.flip()

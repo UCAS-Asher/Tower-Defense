@@ -11,15 +11,13 @@ class Map():
 
 
     def place_tower(self, screen):
-        
-        self.towers.append(tower)
-        screen.blit(tower.image, (tower.x,tower.y))
+        pass
 
     def spawn_enemy(self):
         pass
 
     def wave_money(self, wave):
-        user.money += ((self.wave*15) + 10)
+        return ((self.wave*15) + 10)
 
 class User():
     def __init__(self, health = 500, money = 75):
@@ -36,6 +34,10 @@ class User():
 #Enemies
 class Enemy(ABC):
     def __init__(self, hp, max_hp, speed):
+        self.x = 438
+        self.y = 864
+        x_change = 0
+        y_change = 0
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
@@ -43,7 +45,28 @@ class Enemy(ABC):
     
     def hit_zone(self, user):
         user.health -= self.max_hp*0.5
-        
+    
+    def move(self):
+        if self.x == 438 and self.y == 864:
+            self.y_change = self.speed
+        elif self.y == 720 and self.x == 438:
+            self.y_change = 0
+            self.x_change = self.speed
+        elif self.y == 720 and self.x == 720:
+            self.x_change = 0
+            self.y_change = self.speed
+        elif self.y == 534 and self.x == 720:
+            self.y_change = 0
+            self.x_change = self.speed
+        elif self.y == 534 and self.x == 246:
+            self.x_change = 0
+            self.y_change = self.speed
+        elif self.y == 246 and self.x == 246:
+            self.y_change = 0
+            self.x_change = self.speed
+        elif self.y == 246 and self.x == 864:
+            self.x_change = 0
+            
     
     @abstractmethod
     def give_money(self):
