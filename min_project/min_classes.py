@@ -17,27 +17,20 @@ class Map():
         pass
 
     def wave_money(self, wave):
-        return ((self.wave*15) + 10)
+        #give user money based on wave number
+        return ((wave * 15) + 10)
 
-class User():
-    def __init__(self, health = 500, money = 75):
-        self.health = health
-        self.money = money
-
-    def check_zone(self):
-        if self.health > 0:
-            return True
-        else:
-            return False
 
 
 #Enemies
 class Enemy(ABC):
     def __init__(self, hp, max_hp, speed):
-        self.x = 438
-        self.y = 864
-        x_change = 0
-        y_change = 0
+        # default start position for enemies
+        self.x = 409
+        self.y = 893
+        # track movement deltas as attributes (was local vars before)
+        self.x_change = 0
+        self.y_change = 0
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
@@ -47,20 +40,20 @@ class Enemy(ABC):
         user.health -= self.max_hp*0.5
     
     def move(self):
-        if self.x == 438 and self.y == 864:
-            self.y_change = self.speed
-        elif self.y == 720 and self.x == 438:
+        if self.x == 409 and self.y == 835:
+            self.y_change = -self.speed
+        elif self.y == 749 and self.x == 409:
             self.y_change = 0
             self.x_change = self.speed
-        elif self.y == 720 and self.x == 720:
+        elif self.y == 749 and self.x == 691:
             self.x_change = 0
-            self.y_change = self.speed
+            self.y_change = -self.speed
         elif self.y == 534 and self.x == 720:
             self.y_change = 0
-            self.x_change = self.speed
+            self.x_change = -self.speed
         elif self.y == 534 and self.x == 246:
             self.x_change = 0
-            self.y_change = self.speed
+            self.y_change = -self.speed
         elif self.y == 246 and self.x == 246:
             self.y_change = 0
             self.x_change = self.speed
@@ -74,40 +67,33 @@ class Enemy(ABC):
 
 
 class Enemy1(Enemy):
-    def __init__(self, hp = 100, max_hp = 100, speed = 0.3):
-        self.hp = hp
-        self.max_hp = max_hp
-        self.speed = speed
-        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy1.png'), (45,45))
+    def __init__(self, hp = 100, max_hp = 100, speed = 6.0):
+        # initialize base Enemy to get x/y and movement attributes
+        super().__init__(hp, max_hp, speed)
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy1.png'), (60,60))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
 
 class Enemy2(Enemy):
-    def __init__(self, hp = 200, max_hp = 200, speed = 0.35, image = ''):
-        self.hp = hp
-        self.max_hp = max_hp
-        self.speed = speed
-        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy2.png'), (50,50))
+    def __init__(self, hp = 200, max_hp = 200, speed = 0.35):
+        super().__init__(hp, max_hp, speed)
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy2.png'), (60,60))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
 
 class Enemy3(Enemy):
     def __init__(self, hp = 500, max_hp = 500, speed = 0.4):
-        self.hp = hp
-        self.max_hp = max_hp
-        self.speed = speed
-        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy3.png'), (55,55))
+        super().__init__(hp, max_hp, speed)
+        self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy3.png'), (60,60))
     
     def give_money(self, user):
         user.money += self.max_hp*0.5
 
 class Enemy4(Enemy):
     def __init__(self, hp = 1500, max_hp = 1500, speed = 0.35, image = ''):
-        self.hp = hp
-        self.max_hp = max_hp
-        self.speed = speed
+        super().__init__(hp, max_hp, speed)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy4.png'), (60,60))
     
     def give_money(self, user):
@@ -115,9 +101,7 @@ class Enemy4(Enemy):
 
 class Boss(Enemy):
     def __init__(self, hp = 15000, max_hp = 15000, speed = 0.4, image = ''):
-        self.hp = hp
-        self.max_hp = max_hp
-        self.speed = speed
+        super().__init__(hp, max_hp, speed)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/boss.png'), (65,65))
     
     def give_money(self, user):
