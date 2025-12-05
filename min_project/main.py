@@ -25,9 +25,10 @@ pygame_icon = pygame.image.load('resources/background/icon.png')
 #32x32 image
 pygame.display.set_icon(pygame_icon)
 
-health = 50
+health = 500
 wave = 0
 money = 75
+towers = []
 enemies = []
 enemies_spawn = []
 wave_start = False
@@ -39,12 +40,11 @@ running = True
 
 while running:
     if health <= 0:
-        screen.blit(game_over_text, (480, 480))
+        print("Game Over !, You have lost all your health.")
+        running = False
     
     screen.fill((0,0,0))
     screen.blit(background, (0, 0))
-    over_font = pygame.font.Font('freesansbold.ttf', 100)
-    game_over_text = over_font.render("Game Over", True, (255, 0, 0))
     display_font = pygame.font.Font('freesansbold.ttf', 32)
     hp_text = display_font.render(f"Health: {health}", True, (0, 255, 0))
     wave_text = display_font.render(f"Wave: {wave}", True, (0, 0, 0))
@@ -95,10 +95,24 @@ while running:
         # move() sets x_change/y_change; add to position
         enemy.x = enemy.x + enemy.x_change
         enemy.y = enemy.y + enemy.y_change
-        if enemy.y == 246 and enemy.x == 864:
+        if enemy.y == 218.5 and enemy.x == 836.5:
             health -= enemy.max_hp*0.5
             enemies.remove(enemy)
         screen.blit(enemy.image, (enemy.x, enemy.y))
+
+    for tower in towers:
+        screen.blit(tower.image, (tower.x, tower.y))
+        # check for enemies in range
+        for enemy in enemies:
+            distance = math.sqrt((math.pow((tower.x - enemy.x),2)) + (math.pow((tower.y - enemy.y),2)))
+            if distance <= tower.range:
+                # check if enough time has passed since last shot
+                if current_time - tower.last_shot > tower.delay:
+                    enemy.hp -= tower.damage
+                    tower.last_shot = pygame.time.get_ticks()
+                    if enemy.hp <= 0:
+                        money = enemy.give_money(money)
+                        enemies.remove(enemy)
     
     if len(enemies) == 0 and len(enemies_spawn) == 0 and wave_start == True:
         wave += 1
@@ -109,5 +123,25 @@ while running:
         keys = pygame.key.get_pressed()
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                tower = Tower1()
+                towers.append(tower)
+            if event.key == pygame.K_2:
+                tower = Tower2()
+                towers.append(tower)
+            if event.key == pygame.K_3:
+                tower = Tower3()
+                towers.append(tower)
+            if event.key == pygame.K_4:
+                tower = Tower4()
+                towers.append(tower)
+            if event.key == pygame.K_5:
+                tower = Tower5()
+                towers.append(tower)
+            if event.key == pygame.K_6:
+                tower = Tower6()
+                towers.append(tower)
+            
 
     pygame.display.flip()
