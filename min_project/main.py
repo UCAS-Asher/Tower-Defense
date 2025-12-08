@@ -118,30 +118,39 @@ while running:
         wave += 1
         wave_spawn = False
 
+    placed = False
+
     #loop events
     for event in pygame.event.get():
         keys = pygame.key.get_pressed()
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                tower = Tower1()
-                towers.append(tower)
-            if event.key == pygame.K_2:
-                tower = Tower2()
-                towers.append(tower)
-            if event.key == pygame.K_3:
-                tower = Tower3()
-                towers.append(tower)
-            if event.key == pygame.K_4:
-                tower = Tower4()
-                towers.append(tower)
-            if event.key == pygame.K_5:
-                tower = Tower5()
-                towers.append(tower)
-            if event.key == pygame.K_6:
-                tower = Tower6()
-                towers.append(tower)
+            if placed == False:
+                if event.key == pygame.K_1 and money >= 50:
+                    tower = Tower1()
+                    towers.append(tower)
+                    placed = True
+                if event.key == pygame.K_2 and money >= 125:
+                    tower = Tower2()
+                    towers.append(tower)
+                    placed = True
+                if event.key == pygame.K_3 and money >= 500:
+                    tower = Tower3()
+                    towers.append(tower)
+                    placed = True
+                if event.key == pygame.K_4 and money >= 800:
+                    tower = Tower4()
+                    towers.append(tower)
+                    placed = True
+                if event.key == pygame.K_5 and money >= 1250:
+                    tower = Tower5()
+                    towers.append(tower)
+                    placed = True
+                if event.key == pygame.K_6 and money >= 2500:
+                    tower = Tower6()
+                    towers.append(tower)
+                    placed = True
             
 
     pygame.display.flip()

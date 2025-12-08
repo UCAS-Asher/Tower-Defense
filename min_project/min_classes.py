@@ -108,7 +108,12 @@ class Tower(ABC):
         self.y = y
         self.last_shot = 0
         self.delay = int(1000 * hit_speed)  # milliseconds between shots
-        
+
+    def place_tower(self, screen):
+        while True:
+            screen.blit(pygame.transform.scale(pygame.image.load('resources/pop_ups/place_map.png'), (960, 960)), (self.x, self.y))
+            pygame.display.flip()
+
     def shoot (self):
         pass
         
