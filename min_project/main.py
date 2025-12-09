@@ -128,6 +128,8 @@ while running:
         if event.type == pygame.KEYDOWN:
             if placed == False:
                 if event.key == pygame.K_1 and money >= 50:
+                    if 
+                    
                     tower = Tower1()
                     towers.append(tower)
                     placed = True
