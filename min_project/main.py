@@ -52,6 +52,7 @@ while running:
     screen.blit(wave_text, (10, 10))
     screen.blit(money_text, (650, 10))
     screen.blit(hp_text, (350, 10))
+    screen.blit(pygame.transform.scale(pygame.image.load('resources/pop_ups/tower_choice.png'), (300, 100)), (0, 860))
     
     #for delays and stuff
     current_time = pygame.time.get_ticks()
@@ -107,7 +108,7 @@ while running:
             distance = math.sqrt((math.pow((tower.x - enemy.x),2)) + (math.pow((tower.y - enemy.y),2)))
             if distance <= tower.range:
                 # check if enough time has passed since last shot
-                if current_time - tower.last_shot > tower.delay:
+                if current_time - tower.last_shot >= tower.delay:
                     enemy.hp -= tower.damage
                     tower.last_shot = pygame.time.get_ticks()
                     if enemy.hp <= 0:
@@ -126,33 +127,30 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if placed == False:
-                if event.key == pygame.K_1 and money >= 50:
-                    if 
-                    
-                    tower = Tower1()
-                    towers.append(tower)
-                    placed = True
-                if event.key == pygame.K_2 and money >= 125:
-                    tower = Tower2()
-                    towers.append(tower)
-                    placed = True
-                if event.key == pygame.K_3 and money >= 500:
-                    tower = Tower3()
-                    towers.append(tower)
-                    placed = True
-                if event.key == pygame.K_4 and money >= 800:
-                    tower = Tower4()
-                    towers.append(tower)
-                    placed = True
-                if event.key == pygame.K_5 and money >= 1250:
-                    tower = Tower5()
-                    towers.append(tower)
-                    placed = True
-                if event.key == pygame.K_6 and money >= 2500:
-                    tower = Tower6()
-                    towers.append(tower)
-                    placed = True
+            if event.key == pygame.K_1 and money >= 50:
+                tower = Tower1()
+                tower.place_tower(screen)
+                towers.append(tower)
+            if event.key == pygame.K_2 and money >= 125:
+                tower = Tower2()
+                tower.place_tower(screen)
+                towers.append(tower)
+            if event.key == pygame.K_3 and money >= 500:
+                tower = Tower3()
+                tower.place_tower(screen)
+                towers.append(tower)
+            if event.key == pygame.K_4 and money >= 800:
+                tower = Tower4()
+                tower.place_tower(screen)
+                towers.append(tower)
+            if event.key == pygame.K_5 and money >= 1250:
+                tower = Tower5()
+                tower.place_tower(screen)
+                towers.append(tower)
+            if event.key == pygame.K_6 and money >= 2500:
+                tower = Tower6()
+                tower.place_tower(screen)
+                towers.append(tower)
             
 
     pygame.display.flip()

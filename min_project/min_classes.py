@@ -113,157 +113,152 @@ class Tower(ABC):
     def place_tower(self, screen):
         while True:
             screen.blit(pygame.transform.scale(pygame.image.load('resources/pop_ups/place_map.png'), (960, 960)), (0, 0))
-            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
-                    if 0 <= mouse_x <= 960 and 0 <= mouse_y <= 960:
-                        #first row of spots
-                        if 102 <= mouse_x <= 192 and 102 <= mouse_y <= 192:
-                            self.x = 147
-                            self.y = 147
-                        elif 198 <= mouse_x <= 288 and 102 <= mouse_y <= 192:
-                            self.x = 249
-                            self.y = 147
-                        elif 294 <= mouse_x <= 384 and 102 <= mouse_y <= 192:
-                            self.x = 351
-                            self.y = 147
-                        elif 390 <= mouse_x <= 480 and 102 <= mouse_y <= 192:
-                            self.x = 453
-                            self.y = 147
-                        elif 486 <= mouse_x <= 576 and 102 <= mouse_y <= 192:
-                            self.x = 555
-                            self.y = 147
-                        elif 582 <= mouse_x <= 672 and 102 <= mouse_y <= 192:
-                            self.x = 657
-                            self.y = 147
-                        elif 678 <= mouse_x <= 768 and 102 <= mouse_y <= 192:
-                            self.x = 759
-                            self.y = 147
-                        elif 774 <= mouse_x <= 864 and 102 <= mouse_y <= 192:
-                            self.x = 861
-                            self.y = 147
-                        #second row of spots
-                        elif 102 <= mouse_x <= 192 and 198 <= mouse_y <= 288:
-                            self.x = 147
-                            self.y = 249
-                        #third row of spots
-                        elif 102 <= mouse_x <= 192 and 294 <= mouse_y <= 384:
-                            self.x = 147
-                            self.y = 351
-                        elif 294 <= mouse_x <= 384 and 294 <= mouse_y <= 384:
-                            self.x = 351
-                            self.y = 351
-                        elif 390 <= mouse_x <= 480 and 294 <= mouse_y <= 384:
-                            self.x = 453
-                            self.y = 351
-                        elif 486 <= mouse_x <= 576 and 294 <= mouse_y <= 384:
-                            self.x = 555
-                            self.y = 351
-                        elif 582 <= mouse_x <= 672 and 294 <= mouse_y <= 384:
-                            self.x = 657
-                            self.y = 351
-                        elif 678 <= mouse_x <= 768 and 294 <= mouse_y <= 384:
-                            self.x = 759
-                            self.y = 351
-                        elif 774 <= mouse_x <= 864 and 294 <= mouse_y <= 384:
-                            self.x = 861
-                            self.y = 351
-                        #fourth row of spots
-                        elif 102 <= mouse_x <= 192 and 390 <= mouse_y <= 480:
-                            self.x = 147
-                            self.y = 453
-                        elif 294 <= mouse_x <= 384 and 390 <= mouse_y <= 480:
-                            self.x = 351
-                            self.y = 453
-                        elif 390 <= mouse_x <= 480 and 390 <= mouse_y <= 480:
-                            self.x = 453
-                            self.y = 453
-                        elif 486 <= mouse_x <= 576 and 390 <= mouse_y <= 480:
-                            self.x = 555
-                            self.y = 453
-                        elif 678 <= mouse_x <= 768 and 390 <= mouse_y <= 480:
-                            self.x = 759
-                            self.y = 453
-                        elif 774 <= mouse_x <= 864 and 390 <= mouse_y <= 480:
-                            self.x = 861
-                            self.y = 453
-                        #fifth row of spots
-                        elif 102 <= mouse_x <= 192 and 486 <= mouse_y <= 576:
-                            self.x = 147
-                            self.y = 555
-                        elif 774 <= mouse_x <= 864 and 486 <= mouse_y <= 576:
-                            self.x = 861
-                            self.y = 555
-                        #sixth row of spots
-                        elif 102 <= mouse_x <= 192 and 582 <= mouse_y <= 672:
-                            self.x = 147
-                            self.y = 657
-                        elif 198 <= mouse_x <= 288 and 582 <= mouse_y <= 672:
-                            self.x = 249
-                            self.y = 657
-                        elif 294 <= mouse_x <= 384 and 582 <= mouse_y <= 672:
-                            self.x = 351
-                            self.y = 657
-                        elif 390 <= mouse_x <= 480 and 582 <= mouse_y <= 672:
-                            self.x = 453
-                            self.y = 657
-                        elif 486 <= mouse_x <= 576 and 582 <= mouse_y <= 672:
-                            self.x = 555
-                            self.y = 657
-                        elif 582 <= mouse_x <= 672 and 582 <= mouse_y <= 672:
-                            self.x = 657
-                            self.y = 657
-                        elif 774 <= mouse_x <= 864 and 582 <= mouse_y <= 672:
-                            self.x = 861
-                            self.y = 657
-                        #seventh row of spots
-                        elif 102 <= mouse_x <= 192 and 678 <= mouse_y <= 768:
-                            self.x = 147
-                            self.y = 759
-                        elif 198 <= mouse_x <= 288 and 678 <= mouse_y <= 768:
-                            self.x = 249
-                            self.y = 759
-                        elif 294 <= mouse_x <= 384 and 678 <= mouse_y <= 768:
-                            self.x = 351
-                            self.y = 759
-                        elif 774 <= mouse_x <= 864 and 678 <= mouse_y <= 768:
-                            self.x = 861
-                            self.y = 759
-                        #eighth row of spots
-                        elif 102 <= mouse_x <= 192 and 774 <= mouse_y <= 864:
-                            self.x = 147
-                            self.y = 861
-                        elif 198 <= mouse_x <= 288 and 774 <= mouse_y <= 864:
-                            self.x = 249
-                            self.y = 861
-                        elif 294 <= mouse_x <= 384 and 774 <= mouse_y <= 864:
-                            self.x = 351
-                            self.y = 861
-                        elif 486 <= mouse_x <= 576 and 774 <= mouse_y <= 864:
-                            self.x = 555
-                            self.y = 861
-                        elif 582 <= mouse_x <= 672 and 774 <= mouse_y <= 864:
-                            self.x = 657
-                            self.y = 861
-                        elif 678 <= mouse_x <= 768 and 774 <= mouse_y <= 864:
-                            self.x = 759
-                            self.y = 861
-                        elif 774 <= mouse_x <= 864 and 774 <= mouse_y <= 864:
-                            self.x = 861
-                            self.y = 861
-                        else:
-                            print("Invalid placement. Please select a valid spot.")
-                            continue
-                        screen.blit(self.image, (self.x, self.y))
+                    #first row of spots
+                    if 102 <= mouse_x <= 192 and 102 <= mouse_y <= 192:
+                        self.x = 147
+                        self.y = 147
+                    elif 198 <= mouse_x <= 288 and 102 <= mouse_y <= 192:
+                        self.x = 249
+                        self.y = 147
+                    elif 294 <= mouse_x <= 384 and 102 <= mouse_y <= 192:
+                        self.x = 351
+                        self.y = 147
+                    elif 390 <= mouse_x <= 480 and 102 <= mouse_y <= 192:
+                        self.x = 453
+                        self.y = 147
+                    elif 486 <= mouse_x <= 576 and 102 <= mouse_y <= 192:
+                        self.x = 555
+                        self.y = 147
+                    elif 582 <= mouse_x <= 672 and 102 <= mouse_y <= 192:
+                        self.x = 657
+                        self.y = 147
+                    elif 678 <= mouse_x <= 768 and 102 <= mouse_y <= 192:
+                        self.x = 759
+                        self.y = 147
+                    elif 774 <= mouse_x <= 864 and 102 <= mouse_y <= 192:
+                        self.x = 861
+                        self.y = 147
+                    #second row of spots
+                    elif 102 <= mouse_x <= 192 and 198 <= mouse_y <= 288:
+                        self.x = 147
+                        self.y = 249
+                    #third row of spots
+                    elif 102 <= mouse_x <= 192 and 294 <= mouse_y <= 384:
+                        self.x = 147
+                        self.y = 351
+                    elif 294 <= mouse_x <= 384 and 294 <= mouse_y <= 384:
+                        self.x = 351
+                        self.y = 351
+                    elif 390 <= mouse_x <= 480 and 294 <= mouse_y <= 384:
+                        self.x = 453
+                        self.y = 351
+                    elif 486 <= mouse_x <= 576 and 294 <= mouse_y <= 384:
+                        self.x = 555
+                        self.y = 351
+                    elif 582 <= mouse_x <= 672 and 294 <= mouse_y <= 384:
+                        self.x = 657
+                        self.y = 351
+                    elif 678 <= mouse_x <= 768 and 294 <= mouse_y <= 384:
+                        self.x = 759
+                        self.y = 351
+                    elif 774 <= mouse_x <= 864 and 294 <= mouse_y <= 384:
+                        self.x = 861
+                        self.y = 351
+                    #fourth row of spots
+                    elif 102 <= mouse_x <= 192 and 390 <= mouse_y <= 480:
+                        self.x = 147
+                        self.y = 453
+                    elif 294 <= mouse_x <= 384 and 390 <= mouse_y <= 480:
+                        self.x = 351
+                        self.y = 453
+                    elif 390 <= mouse_x <= 480 and 390 <= mouse_y <= 480:
+                        self.x = 453
+                        self.y = 453
+                    elif 486 <= mouse_x <= 576 and 390 <= mouse_y <= 480:
+                        self.x = 555
+                        self.y = 453
+                    elif 678 <= mouse_x <= 768 and 390 <= mouse_y <= 480:
+                        self.x = 759
+                        self.y = 453
+                    elif 774 <= mouse_x <= 864 and 390 <= mouse_y <= 480:
+                        self.x = 861
+                        self.y = 453
+                    #fifth row of spots
+                    elif 102 <= mouse_x <= 192 and 486 <= mouse_y <= 576:
+                        self.x = 147
+                        self.y = 555
+                    elif 774 <= mouse_x <= 864 and 486 <= mouse_y <= 576:
+                        self.x = 861
+                        self.y = 555
+                    #sixth row of spots
+                    elif 102 <= mouse_x <= 192 and 582 <= mouse_y <= 672:
+                        self.x = 147
+                        self.y = 657
+                    elif 198 <= mouse_x <= 288 and 582 <= mouse_y <= 672:
+                        self.x = 249
+                        self.y = 657
+                    elif 294 <= mouse_x <= 384 and 582 <= mouse_y <= 672:
+                        self.x = 351
+                        self.y = 657
+                    elif 390 <= mouse_x <= 480 and 582 <= mouse_y <= 672:
+                        self.x = 453
+                        self.y = 657
+                    elif 486 <= mouse_x <= 576 and 582 <= mouse_y <= 672:
+                        self.x = 555
+                        self.y = 657
+                    elif 582 <= mouse_x <= 672 and 582 <= mouse_y <= 672:
+                        self.x = 657
+                        self.y = 657
+                    elif 774 <= mouse_x <= 864 and 582 <= mouse_y <= 672:
+                        self.x = 861
+                        self.y = 657
+                    #seventh row of spots
+                    elif 102 <= mouse_x <= 192 and 678 <= mouse_y <= 768:
+                        self.x = 147
+                        self.y = 759
+                    elif 198 <= mouse_x <= 288 and 678 <= mouse_y <= 768:
+                        self.x = 249
+                        self.y = 759
+                    elif 294 <= mouse_x <= 384 and 678 <= mouse_y <= 768:
+                        self.x = 351
+                        self.y = 759
+                    elif 774 <= mouse_x <= 864 and 678 <= mouse_y <= 768:
+                        self.x = 861
+                        self.y = 759
+                    #eighth row of spots
+                    elif 102 <= mouse_x <= 192 and 774 <= mouse_y <= 864:
+                        self.x = 147
+                        self.y = 861
+                    elif 198 <= mouse_x <= 288 and 774 <= mouse_y <= 864:
+                        self.x = 249
+                        self.y = 861
+                    elif 294 <= mouse_x <= 384 and 774 <= mouse_y <= 864:
+                        self.x = 351
+                        self.y = 861
+                    elif 486 <= mouse_x <= 576 and 774 <= mouse_y <= 864:
+                        self.x = 555
+                        self.y = 861
+                    elif 582 <= mouse_x <= 672 and 774 <= mouse_y <= 864:
+                        self.x = 657
+                        self.y = 861
+                    elif 678 <= mouse_x <= 768 and 774 <= mouse_y <= 864:
+                        self.x = 759
+                        self.y = 861
+                    elif 774 <= mouse_x <= 864 and 774 <= mouse_y <= 864:
+                        self.x = 861
+                        self.y = 861
+                    else:
+                        print("Invalid placement")
+                    break
                 if event.type == pygame.K_ESCAPE:
                     break
             pygame.display.flip()
 
-    def shoot (self):
-        pass
         
     def upgrade(self, money):
         if money >= self.cost*2:
@@ -306,7 +301,7 @@ class Tower(ABC):
             return False
 
 class Tower1(Tower):
-    def __init__(self, x, y, damage=25, hit_speed = 1, range = 400, cost = 50):
+    def __init__(self, x = 0, y = 0, damage=25, hit_speed = 1, range = 400, cost = 50):
         self.damage = damage
         self.hit_speed = hit_speed
         self.range = range
@@ -318,7 +313,7 @@ class Tower1(Tower):
         
 
 class Tower2(Tower):
-    def __init__(self, x, y, damage=35, hit_speed = 0.75, range = 450, cost = 125):
+    def __init__(self, x = 0, y = 0, damage=35, hit_speed = 0.75, range = 450, cost = 125):
         self.damage = damage
         self.hit_speed = hit_speed
         self.range = range
@@ -330,7 +325,7 @@ class Tower2(Tower):
         
 
 class Tower3(Tower):
-    def __init__(self, x, y, damage=75, hit_speed = 0.5, range = 500, cost = 500):
+    def __init__(self, x = 0, y = 0, damage=75, hit_speed = 0.5, range = 500, cost = 500):
         self.damage = damage
         self.hit_speed = hit_speed
         self.range = range
@@ -342,7 +337,7 @@ class Tower3(Tower):
         
 
 class Tower4(Tower):
-    def __init__(self, x, y, damage=350, hit_speed = 1.75, range = 700, cost = 800):
+    def __init__(self, x = 0, y = 0, damage=350, hit_speed = 1.75, range = 700, cost = 800):
         self.damage = damage
         self.hit_speed = hit_speed
         self.range = range
@@ -354,7 +349,7 @@ class Tower4(Tower):
 
 
 class Tower5(Tower):
-    def __init__(self, x, y, damage=125, hit_speed = 0.4, range = 550, cost = 1250):
+    def __init__(self, x = 0, y = 0, damage=125, hit_speed = 0.4, range = 550, cost = 1250):
         self.damage = damage
         self.hit_speed = hit_speed
         self.range = range
@@ -365,7 +360,7 @@ class Tower5(Tower):
     
 
 class Tower6(Tower):
-    def __init__(self, x, y, damage=250, hit_speed = 0.5, range = 600, cost = 2500):
+    def __init__(self, x = 0, y = 0, damage=250, hit_speed = 0.5, range = 600, cost = 2500):
         self.damage = damage
         self.hit_speed = hit_speed
         self.range = range
