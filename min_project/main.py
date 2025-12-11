@@ -2,9 +2,6 @@
 
 from min_classes import *
 import pygame
-import random
-import math
-from pygame import mixer
 
 # Initialize Pygame
 pygame.init()
@@ -13,11 +10,10 @@ pygame.init()
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 960
 FPS = 60
-GRID_SIZE = 60
 
 # Initialize game
 game = Map()
-user = User(health=500, money=100)
+
 
 # Set background
 background = game.image
@@ -30,6 +26,11 @@ pygame.display.set_icon(pygame_icon)
 
 # Clock for FPS
 clock = pygame.time.Clock()
+
+
+#Important
+money = 75
+health = 500
 
 # Game variables
 wave = 0
@@ -46,19 +47,15 @@ current_wave_time = 0
 wave_complete = False
 last_wave_time = 0
 
-# Simple path for enemies (curved path across the map)
+# Simple path for enemies to follow
 enemy_path = [
-    (438, 864),  # Start
-    (438, 750),
-    (400, 650),
-    (350, 600),
-    (250, 580),
-    (150, 590),
-    (100, 650),
-    (150, 750),
-    (200, 850),
-    (300, 900),
-    (438, 900),  # End
+    (410.5, 836.5),  # Start
+    (410.5, 692.5),
+    (692.5, 692.5),
+    (692.5, 506.5),
+    (218.5, 506.5),
+    (218.5, 218.5),
+    (218.5, 836.5)  # End
 ]
 
 # Fonts
@@ -73,12 +70,12 @@ def draw_ui():
     screen.blit(wave_text, (10, 10))
     
     # Health text
-    health_color = (255, 0, 0) if user.health < 100 else (0, 255, 0)
-    health_text = small_font.render(f"Health: {user.health}", True, health_color)
+    health_color = (255, 0, 0) if health < 100 else (0, 255, 0)
+    health_text = small_font.render(f"Health: {health}", True, health_color)
     screen.blit(health_text, (10, 50))
     
     # Money text
-    money_text = small_font.render(f"Money: {user.money}", True, (255, 215, 0))
+    money_text = small_font.render(f"Money: {money}", True, (255, 215, 0))
     screen.blit(money_text, (10, 90))
     
     # Tower placement mode indicator
@@ -86,36 +83,6 @@ def draw_ui():
         mode_text = tiny_font.render(f"Placing: {selected_tower.__class__.__name__} (Click to place, ESC to cancel)", True, (255, 255, 0))
         screen.blit(mode_text, (10, 900))
 
-def spawn_wave():
-    """Spawn enemies for the current wave"""
-    global wave_spawn, enemies_spawn
-    wave_spawn = True
-    enemies_spawn = []
-    
-    # Wave progression
-    if wave <= 5:
-        count = wave + 2
-        for _ in range(count):
-            enemies_spawn.append(Enemy1())
-    elif wave <= 10:
-        count = wave
-        for _ in range(count):
-            enemies_spawn.append(Enemy2())
-    elif wave <= 15:
-        count = wave - 3
-        for _ in range(count):
-            enemies_spawn.append(Enemy3())
-    elif wave <= 19:
-        count = wave - 10
-        for _ in range(count):
-            enemies_spawn.append(Enemy4())
-    elif wave == 20:
-        enemies_spawn.append(Boss())
-    else:
-        # Victory
-        return True
-    
-    return False
 
 def show_menu():
     """Display tower selection menu"""
@@ -135,25 +102,145 @@ def show_menu():
     menu_text = tiny_font.render(tower_display, True, (200, 200, 200))
     screen.blit(menu_text, (10, 930))
 
-def handle_tower_placement(mouse_pos):
-    """Handle tower placement on click"""
-    global tower_placement_mode, selected_tower
-    
-    x, y = mouse_pos
-    # Snap to grid
-    grid_x = (x // GRID_SIZE) * GRID_SIZE
-    grid_y = (y // GRID_SIZE) * GRID_SIZE
-    
-    # Create tower instance
-    tower_classes = [Tower1, Tower2, Tower3, Tower4, Tower5, Tower6]
-    if selected_tower.__class__ in tower_classes:
-        tower = selected_tower.__class__(grid_x, grid_y)
-        if game.place_tower(tower, user, screen):
-            tower_placement_mode = False
-            selected_tower = None
-            return True
-    
-    return False
+def grid_snap(mouse_x, mouse_y):
+    """Snap coordinates to grid for tower placement"""
+    if 102 <= mouse_x <= 192 and 102 <= mouse_y <= 192:
+        grid_x = 147
+        grid_y = 147
+    elif 198 <= mouse_x <= 288 and 102 <= mouse_y <= 192:
+        grid_x = 249
+        grid_y = 147
+    elif 294 <= mouse_x <= 384 and 102 <= mouse_y <= 192:
+        grid_x = 351
+        grid_y = 147
+    elif 390 <= mouse_x <= 480 and 102 <= mouse_y <= 192:
+        grid_x = 453
+        grid_y = 147
+    elif 486 <= mouse_x <= 576 and 102 <= mouse_y <= 192:
+        grid_x = 555
+        grid_y = 147
+    elif 582 <= mouse_x <= 672 and 102 <= mouse_y <= 192:
+        grid_x = 657
+        grid_y = 147
+    elif 678 <= mouse_x <= 768 and 102 <= mouse_y <= 192:
+        grid_x = 759
+        grid_y = 147
+    elif 774 <= mouse_x <= 864 and 102 <= mouse_y <= 192:
+        grid_x = 861
+        grid_y = 147
+    #second row of spots
+    elif 102 <= mouse_x <= 192 and 198 <= mouse_y <= 288:
+        grid_x = 147
+        grid_y = 249
+    #third row of spots
+    elif 102 <= mouse_x <= 192 and 294 <= mouse_y <= 384:
+        grid_x = 147
+        grid_y = 351
+    elif 294 <= mouse_x <= 384 and 294 <= mouse_y <= 384:
+        grid_x = 351
+        grid_y = 351
+    elif 390 <= mouse_x <= 480 and 294 <= mouse_y <= 384:
+        grid_x = 453
+        grid_y = 351
+    elif 486 <= mouse_x <= 576 and 294 <= mouse_y <= 384:
+        grid_x = 555
+        grid_y = 351
+    elif 582 <= mouse_x <= 672 and 294 <= mouse_y <= 384:
+        grid_x = 657
+        grid_y = 351
+    elif 678 <= mouse_x <= 768 and 294 <= mouse_y <= 384:
+        grid_x = 759
+        grid_y = 351
+    elif 774 <= mouse_x <= 864 and 294 <= mouse_y <= 384:
+        grid_x = 861
+        grid_y = 351
+    #fourth row of spots
+    elif 102 <= mouse_x <= 192 and 390 <= mouse_y <= 480:
+        grid_x = 147
+        grid_y = 453
+    elif 294 <= mouse_x <= 384 and 390 <= mouse_y <= 480:
+        grid_x = 351
+        grid_y = 453
+    elif 390 <= mouse_x <= 480 and 390 <= mouse_y <= 480:
+        grid_x = 453
+        grid_y = 453
+    elif 486 <= mouse_x <= 576 and 390 <= mouse_y <= 480:
+        grid_x = 555
+        grid_y = 453
+    elif 678 <= mouse_x <= 768 and 390 <= mouse_y <= 480:
+        grid_x = 759
+        grid_y = 453
+    elif 774 <= mouse_x <= 864 and 390 <= mouse_y <= 480:
+        grid_x = 861
+        grid_y = 453
+    #fifth row of spots
+    elif 102 <= mouse_x <= 192 and 486 <= mouse_y <= 576:
+        grid_x = 147
+        grid_y = 555
+    elif 774 <= mouse_x <= 864 and 486 <= mouse_y <= 576:
+        grid_x = 861
+        grid_y = 555
+    #sixth row of spots
+    elif 102 <= mouse_x <= 192 and 582 <= mouse_y <= 672:
+        grid_x = 147
+        grid_y = 657
+    elif 198 <= mouse_x <= 288 and 582 <= mouse_y <= 672:
+        grid_x = 249
+        grid_y = 657
+    elif 294 <= mouse_x <= 384 and 582 <= mouse_y <= 672:
+        grid_x = 351
+        grid_y = 657
+    elif 390 <= mouse_x <= 480 and 582 <= mouse_y <= 672:
+        grid_x = 453
+        grid_y = 657
+    elif 486 <= mouse_x <= 576 and 582 <= mouse_y <= 672:
+        grid_x = 555
+        grid_y = 657
+    elif 582 <= mouse_x <= 672 and 582 <= mouse_y <= 672:
+        grid_x = 657
+        grid_y = 657
+    elif 774 <= mouse_x <= 864 and 582 <= mouse_y <= 672:
+        grid_x = 861
+        grid_y = 657
+    #seventh row of spots
+    elif 102 <= mouse_x <= 192 and 678 <= mouse_y <= 768:
+        grid_x = 147
+        grid_y = 759
+    elif 198 <= mouse_x <= 288 and 678 <= mouse_y <= 768:
+        grid_x = 249
+        grid_y = 759
+    elif 294 <= mouse_x <= 384 and 678 <= mouse_y <= 768:
+        grid_x = 351
+        grid_y = 759
+    elif 774 <= mouse_x <= 864 and 678 <= mouse_y <= 768:
+        grid_x = 861
+        grid_y = 759
+    #eighth row of spots
+    elif 102 <= mouse_x <= 192 and 774 <= mouse_y <= 864:
+        grid_x = 147
+        grid_y = 861
+    elif 198 <= mouse_x <= 288 and 774 <= mouse_y <= 864:
+        grid_x = 249
+        grid_y = 861
+    elif 294 <= mouse_x <= 384 and 774 <= mouse_y <= 864:
+        grid_x = 351
+        grid_y = 861
+    elif 486 <= mouse_x <= 576 and 774 <= mouse_y <= 864:
+        grid_x = 555
+        grid_y = 861
+    elif 582 <= mouse_x <= 672 and 774 <= mouse_y <= 864:
+        grid_x = 657
+        grid_y = 861
+    elif 678 <= mouse_x <= 768 and 774 <= mouse_y <= 864:
+        grid_x = 759
+        grid_y = 861
+    elif 774 <= mouse_x <= 864 and 774 <= mouse_y <= 864:
+        grid_x = 861
+        grid_y = 861
+
+
+    return grid_x, grid_y
+
 
 def handle_key_press(event):
     """Handle keyboard input for tower selection"""
@@ -190,7 +277,7 @@ while running:
     screen.blit(background, (0, 0))
     
     # Check game over
-    if not user.check_zone():
+    if health <= 0:
         game_over = True
         game_over_text = wave_font.render("GAME OVER!", True, (255, 0, 0))
         screen.blit(game_over_text, (400, 450))
@@ -200,42 +287,16 @@ while running:
         won_text = wave_font.render("YOU WIN!", True, (0, 255, 0))
         screen.blit(won_text, (380, 450))
     
-    # Start waves
-    if elapsed_time > 3 and wave == 0:
-        wave = 1
-        wave_start = True
-        last_wave_time = current_time
-    elif wave_complete and (current_time - last_wave_time) > 5000:
-        if spawn_wave() == True:
-            game_won = True
-        else:
-            wave += 1
-            wave_complete = False
-            last_wave_time = current_time
     
-    # Spawn enemies
-    if wave_spawn and len(enemies_spawn) > 0 and (current_time - last_spawn) > 1000:
-        enemies.append(enemies_spawn.pop(0))
-        last_spawn = current_time
-        
-        if len(enemies_spawn) == 0:
-            wave_spawn = False
-            wave_complete = True
+    
     
     # Move enemies
-    for enemy in enemies[:]:
-        if enemy.alive:
-            enemy.move(enemy_path)
-            screen.blit(enemy.image, (int(enemy.x), int(enemy.y)))
+    for enemy in enemies:
+        enemy.move(enemy_path)
+        screen.blit(enemy.image, (int(enemy.x), int(enemy.y)))
+        
             
-            # Draw health bar
-            health_width = 30
-            health_ratio = enemy.hp / enemy.max_hp
-            pygame.draw.rect(screen, (255, 0, 0), (int(enemy.x), int(enemy.y) - 10, health_width, 4))
-            pygame.draw.rect(screen, (0, 255, 0), (int(enemy.x), int(enemy.y) - 10, int(health_width * health_ratio), 4))
-            
-            # Check if reached end
-            if enemy.path_index >= len(enemy_path) - 1:
+        if enemy.x > 870:
                 enemy.hit_zone(user)
                 enemy.alive = False
         else:
@@ -243,9 +304,7 @@ while running:
             enemies.remove(enemy)
     
     # Tower shooting
-    for tower in game.towers:
-        target = tower.shoot(enemies, current_time)
-        screen.blit(tower.image, (tower.x, tower.y))
+    
         
         # Draw range radius (optional, for debugging)
         # pygame.draw.circle(screen, (100, 100, 100), (int(tower.x + 30), int(tower.y + 30)), tower.range_radius, 1)
@@ -253,8 +312,7 @@ while running:
     # Tower placement preview
     if tower_placement_mode and selected_tower:
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        grid_x = (mouse_x // GRID_SIZE) * GRID_SIZE
-        grid_y = (mouse_y // GRID_SIZE) * GRID_SIZE
+        grid_x, grid_y = grid_snap(mouse_x, mouse_y)
         
         # Draw semi-transparent preview
         preview_image = selected_tower.image

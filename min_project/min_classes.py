@@ -29,26 +29,6 @@ class Map():
     def wave_money(self, wave):
         return ((wave*15) + 10)
 
-class User():
-    def __init__(self, health = 500, money = 75):
-        self.health = health
-        self.money = money
-        self.max_health = health
-
-    def check_zone(self):
-        if self.health > 0:
-            return True
-        else:
-            return False
-    
-    def take_damage(self, damage):
-        self.health -= damage
-        if self.health < 0:
-            self.health = 0
-    
-    def add_money(self, amount):
-        self.money += amount
-
 
 #Enemies
 class Enemy(ABC):
