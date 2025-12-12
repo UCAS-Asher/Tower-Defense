@@ -286,6 +286,9 @@ while running:
     if game_won:
         won_text = wave_font.render("YOU WIN!", True, (0, 255, 0))
         screen.blit(won_text, (380, 450))
+
+    if tower_placement_mode == True:
+        screen.blit('resources/pop_ups/place_map.png' (0,0))
     
     
     
@@ -293,14 +296,13 @@ while running:
     # Move enemies
     for enemy in enemies:
         enemy.move(enemy_path)
-        screen.blit(enemy.image, (int(enemy.x), int(enemy.y)))
+        screen.blit(enemy.image, ((enemy.x), (enemy.y)))
         
             
         if enemy.x > 870:
-                enemy.hit_zone(user)
-                enemy.alive = False
-        else:
-            enemy.give_money(user)
+                health -= (enemy.max_hp/2)
+        elif enemy.hp < 0:
+            money += (enemy.max_hp/2)
             enemies.remove(enemy)
     
     # Tower shooting
