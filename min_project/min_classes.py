@@ -12,11 +12,11 @@ class Map():
         self.towers = []
         self.wave = 0
 
-    def place_tower(self, tower, user, screen):
-        if user.money >= tower.cost:
-            user.money -= tower.cost
+    def place_tower(self, tower, money):
+        if money >= tower.cost:
+            money -= tower.cost
             self.towers.append(tower)
-            return True
+            return money
         return False
 
     def remove_tower(self, tower):
@@ -54,9 +54,6 @@ class Enemy(ABC):
                 self.x += (dx / distance) * self.speed
                 self.y += (dy / distance) * self.speed
         
-    def hit_zone(self, user):
-        user.take_damage(int(self.max_hp*0.5))
-        self.alive = False
         
     @abstractmethod
     def give_money(self, user):

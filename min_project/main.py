@@ -1,4 +1,4 @@
-#Tower Defense Game - Complete Implementation
+#Tower Defense Game
 
 from min_classes import *
 import pygame
@@ -7,7 +7,7 @@ import pygame
 pygame.init()
 
 # Game constants
-SCREEN_WIDTH = 960
+SCREEN_WIDTH = 960  
 SCREEN_HEIGHT = 960
 FPS = 60
 
@@ -23,6 +23,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tower Defense")
 pygame_icon = pygame.image.load('resources/background/icon.png')
 pygame.display.set_icon(pygame_icon)
+place_map = pygame.transform.scale(pygame.image.load('resources/background/place_map.png'), (960,960))
 
 # Clock for FPS
 clock = pygame.time.Clock()
@@ -237,14 +238,33 @@ def grid_snap(mouse_x, mouse_y):
     elif 774 <= mouse_x <= 864 and 774 <= mouse_y <= 864:
         grid_x = 861
         grid_y = 861
+    else:
+        grid_x = None
+        grid_y = None
 
 
     return grid_x, grid_y
 
+def handle_tower_placement(mouse_pos):
+    global money, tower_placement_mode, selected_tower
+    """Handle placing a tower on the map"""
+    mouse_x, mouse_y = mouse_pos
+    grid_x, grid_y = grid_snap(mouse_x, mouse_y)
+    
+    if grid_x is not None and grid_y is not None and selected_tower:
+        # Create a new tower instance at the snapped grid position
+        new_tower = selected_tower.__class__(grid_x, grid_y)
+        
+        # Attempt to place the tower
+        updated_money = game.place_tower(new_tower, money)
+        if updated_money is not False:
+            money = updated_money
+            tower_placement_mode = False
+            selected_tower = None
 
 def handle_key_press(event):
-    """Handle keyboard input for tower selection"""
     global tower_placement_mode, selected_tower
+    """Handle keyboard input for tower selection"""
     
     if event.type == pygame.KEYDOWN:
         tower_map = {
@@ -276,6 +296,7 @@ while running:
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     
+
     # Check game over
     if health <= 0:
         game_over = True
@@ -287,59 +308,93 @@ while running:
         won_text = wave_font.render("YOU WIN!", True, (0, 255, 0))
         screen.blit(won_text, (380, 450))
 
-    if tower_placement_mode == True:
-        screen.blit('resources/pop_ups/place_map.png' (0,0))
-    
-    
-    
-    
-    # Move enemies
-    for enemy in enemies:
-        enemy.move(enemy_path)
-        screen.blit(enemy.image, ((enemy.x), (enemy.y)))
+    if not game_over and not game_won:
+        if elapsed_time > 5 and wave == 0:
+            wave = 1
+            current_wave_time = current_time
+
+        # Spawn enemies for the wave
+        if len(enemies_spawn) == 0 and len(enemies) == 0:
+            wave += 1
+
+
+        for enemy in enemies_spawn:
+            if current_time - last_spawn > 1000:
+                enemies.append(enemy)
+                enemies_spawn.remove(enemy)
+                last_spawn = current_time
         
+        if wave > 0 and wave < 5 and len(enemies_spawn) == 0 and len(enemies) == 0:
+            for i in range(wave):
+                enemies_spawn.append(Enemy1(enemy_path[0][0], enemy_path[0][1]))
+        elif wave >= 5 and wave < 10 and len(enemies_spawn) == 0 and len(enemies) == 0:
+            for i in range(wave):
+                enemies_spawn.append(Enemy2(enemy_path[1][0], enemy_path[1][1]))
+        elif wave >= 10 and wave < 15 and len(enemies_spawn) == 0 and len(enemies) == 0:
+            for i in range(wave):
+                enemies_spawn.append(Enemy3(enemy_path[2][0], enemy_path[2][1]))
+        elif wave >= 15 and wave < 20 and len(enemies_spawn) == 0 and len(enemies) == 0:
+            for i in range(wave):
+                enemies_spawn.append(Enemy4(enemy_path[3][0], enemy_path[3][1]))
+        elif wave == 20 and len(enemies_spawn) == 0 and len(enemies) == 0:
+            enemies_spawn.append(Boss(enemy_path[4][0], enemy_path[4][1]))
+        # Tower placement mode
+        if tower_placement_mode == True:
+            screen.blit(place_map, (0,0))
+            #preview tower
+            if selected_tower:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                grid_x, grid_y = grid_snap(mouse_x, mouse_y)
+                
+                if grid_x is not None and grid_y is not None:
+                    # Draw semi-transparent preview
+                    preview_image = selected_tower.image
+                    preview_surface = preview_image.copy()
+                    preview_surface.set_alpha(128)
+                    screen.blit(preview_surface, (grid_x, grid_y))
+                    
+                    # Draw range circle
+                    pygame.draw.circle(screen, (100, 200, 100), (grid_x + 30, grid_y + 30), selected_tower.range_radius, 1)
+        
+        
+        
+        
+        # Move enemies
+        for enemy in enemies:
+            enemy.move(enemy_path)
+            screen.blit(enemy.image, ((enemy.x), (enemy.y)))
             
-        if enemy.x > 870:
-                health -= (enemy.max_hp/2)
-        elif enemy.hp < 0:
-            money += (enemy.max_hp/2)
-            enemies.remove(enemy)
-    
-    # Tower shooting
-    
+                
+            if enemy.x > 870:
+                    health -= (enemy.max_hp/2)
+            elif enemy.hp < 0:
+                money += (enemy.max_hp/2)
+                enemies.remove(enemy)
         
-        # Draw range radius (optional, for debugging)
-        # pygame.draw.circle(screen, (100, 100, 100), (int(tower.x + 30), int(tower.y + 30)), tower.range_radius, 1)
-    
-    # Tower placement preview
-    if tower_placement_mode and selected_tower:
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        grid_x, grid_y = grid_snap(mouse_x, mouse_y)
+        # Tower shooting
+        for tower in game.towers:
+            tower.shoot(enemies, current_time)
+            screen.blit(tower.image, (tower.x, tower.y))
+            # Draw range radius (optional, for debugging)
+            # pygame.draw.circle(screen, (100, 100, 100), (int(tower.x + 30), int(tower.y + 30)), tower.range_radius, 1)
         
-        # Draw semi-transparent preview
-        preview_image = selected_tower.image
-        preview_surface = preview_image.copy()
-        preview_surface.set_alpha(128)
-        screen.blit(preview_surface, (grid_x, grid_y))
         
-        # Draw range circle
-        pygame.draw.circle(screen, (100, 200, 100), (grid_x + 30, grid_y + 30), selected_tower.range_radius, 1)
-    
-    # Draw UI
-    draw_ui()
-    show_menu()
-    
-    # Event handling
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
         
-        if event.type == pygame.KEYDOWN:
-            handle_key_press(event)
+        # Draw UI
+        draw_ui()
+        show_menu()
         
-        if event.type == pygame.MOUSEBUTTONDOWN and tower_placement_mode:
-            if event.button == 1:  # Left click
-                handle_tower_placement(event.pos)
+        # Event handling
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            
+            if event.type == pygame.KEYDOWN:
+                handle_key_press(event)
+            
+            if event.type == pygame.MOUSEBUTTONDOWN and tower_placement_mode:
+                if event.button == 1:  # Left click
+                    handle_tower_placement(event.pos)
     
     pygame.display.flip()
 
