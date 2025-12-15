@@ -32,28 +32,39 @@ class Map():
 
 #Enemies
 class Enemy(ABC):
-    def __init__(self, hp, max_hp, speed, x=438, y=864):
+    def __init__(self, hp, max_hp, speed, x=410.5, y=836.5):
         self.hp = hp
         self.max_hp = max_hp
         self.speed = speed
         self.x = x
         self.y = y
-        self.path_index = 0
-        self.alive = True
 
-    def move(self, path):
-        if self.path_index < len(path) - 1:
-            target = path[self.path_index]
-            dx = target[0] - self.x
-            dy = target[1] - self.y
-            distance = math.sqrt(dx**2 + dy**2)
-            
-            if distance < self.speed:
-                self.path_index += 1
-            else:
-                self.x += (dx / distance) * self.speed
-                self.y += (dy / distance) * self.speed
-        
+    def move(self):
+        path = [
+        (410.5, 836.5),  # Start
+        (410.5, 692.5),
+        (692.5, 692.5),
+        (692.5, 506.5),
+        (218.5, 506.5),
+        (218.5, 218.5),
+        (836.5, 218.5) # End
+        ]
+
+        if self.x > path[1][0] and self.y == path[0][1]:
+            self.x -= self.speed
+        if self.x == path[1][0] and self.y > path[1][1]:
+            self.y -= self.speed
+        if self.x < path[2][0] and self.y == path[1][1]:
+            self.x += self.speed
+        if self.x == path[2][0] and self.y > path[3][1]:
+            self.y -= self.speed
+        if self.x > path[4][0] and self.y == path[3][1]:
+            self.x -= self.speed
+        if self.x == path[4][0] and self.y > path[5][1]:
+            self.y -= self.speed
+        if self.x < path[6][0] and self.y == path[5][1]:
+            self.x += self.speed
+
         
     @abstractmethod
     def give_money(self, user):
@@ -61,7 +72,7 @@ class Enemy(ABC):
 
 
 class Enemy1(Enemy):
-    def __init__(self, hp = 100, max_hp = 100, speed = 0.3, x=438, y=864):
+    def __init__(self, hp = 100, max_hp = 100, speed = 1, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy1.png'), (45,45))
     
@@ -69,36 +80,36 @@ class Enemy1(Enemy):
         user.add_money(int(self.max_hp*0.5))
 
 class Enemy2(Enemy):
-    def __init__(self, hp = 200, max_hp = 200, speed = 0.35, x=438, y=864):
+    def __init__(self, hp = 200, max_hp = 300, speed = 0.35, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy2.png'), (50,50))
     
     def give_money(self, user):
-        user.add_money(int(self.max_hp*0.5))
+        user.add_money(int(self.max_hp*0.35))
 
 class Enemy3(Enemy):
-    def __init__(self, hp = 500, max_hp = 500, speed = 0.4, x=438, y=864):
+    def __init__(self, hp = 500, max_hp = 900, speed = 0.4, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy3.png'), (55,55))
     
     def give_money(self, user):
-        user.add_money(int(self.max_hp*0.5))
+        user.add_money(int(self.max_hp*0.3))
 
 class Enemy4(Enemy):
-    def __init__(self, hp = 1500, max_hp = 1500, speed = 0.35, x=438, y=864):
+    def __init__(self, hp = 1500, max_hp = 1800, speed = 0.35, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy4.png'), (60,60))
     
     def give_money(self, user):
-        user.add_money(int(self.max_hp*0.5))
+        user.add_money(int(self.max_hp*0.25))
 
 class Boss(Enemy):
-    def __init__(self, hp = 15000, max_hp = 15000, speed = 0.4, x=438, y=864):
+    def __init__(self, hp = 15000, max_hp = 15000, speed = 0.4, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/boss.png'), (65,65))
     
     def give_money(self, user):
-        user.add_money(int(self.max_hp*0.5))
+        user.add_money(int(self.max_hp*100000000000000000000000000000000000000000000000000))
 
 
 
@@ -125,15 +136,13 @@ class Tower(ABC):
         
         for enemy in enemies:
             distance = math.sqrt((enemy.x - self.x)**2 + (enemy.y - self.y)**2)
-            if distance < closest_distance and enemy.alive:
+            if distance < closest_distance:
                 closest_distance = distance
                 closest_enemy = enemy
         
         if closest_enemy:
             self.last_shot_time = current_time
             closest_enemy.hp -= self.damage
-            if closest_enemy.hp <= 0:
-                closest_enemy.alive = False
             return closest_enemy
         return None
         
@@ -174,37 +183,37 @@ class Tower(ABC):
             return False
 
 class Tower1(Tower):
-    def __init__(self, x, y, damage=25, hit_speed = 1, cost = 50, range_radius=150):
+    def __init__(self, x, y, damage=25, hit_speed = 1, cost = 65, range_radius=160):
         super().__init__(x, y, damage, hit_speed, cost, range_radius)
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/broken_heart.png'), (60,60))
     
 
 class Tower2(Tower):
-    def __init__(self, x, y, damage=35, hit_speed = 0.75, cost = 125, range_radius=180):
+    def __init__(self, x, y, damage=35, hit_speed = 0.75, cost = 250, range_radius=180):
         super().__init__(x, y, damage, hit_speed, cost, range_radius)
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/chickenstarsguy.png'), (60,60))
     
 
 class Tower3(Tower):
-    def __init__(self, x, y, damage=75, hit_speed = 0.5, cost = 500, range_radius=200):
+    def __init__(self, x, y, damage=75, hit_speed = 0.5, cost = 750, range_radius=200):
         super().__init__(x, y, damage, hit_speed, cost, range_radius)
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/einstein.png'), (60,60))
     
 
 class Tower4(Tower):
-    def __init__(self, x, y, damage=350, hit_speed = 1.75, cost = 800, range_radius=160):
+    def __init__(self, x, y, damage=350, hit_speed = 1.75, cost = 1900, range_radius=280):
         super().__init__(x, y, damage, hit_speed, cost, range_radius)
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/61guy.png'), (60,60))
 
 
 class Tower5(Tower):
-    def __init__(self, x, y, damage=125, hit_speed = 0.4, cost = 1250, range_radius=220):
+    def __init__(self, x, y, damage=125, hit_speed = 0.4, cost = 4250, range_radius=220):
         super().__init__(x, y, damage, hit_speed, cost, range_radius)
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/kendrick.png'), (60,60))
 
 
 class Tower6(Tower):
-    def __init__(self, x, y, damage=250, hit_speed = 0.5, cost = 2500, range_radius=240):
+    def __init__(self, x, y, damage=250, hit_speed = 0.5, cost = 12000, range_radius=240):
         super().__init__(x, y, damage, hit_speed, cost, range_radius)
         self.image = pygame.transform.scale(pygame.image.load('resources/towers/mason.png'), (60,60))
         
