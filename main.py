@@ -2,6 +2,7 @@
 
 from min_classes import *
 import pygame
+from pygame import mixer
 
 # Initialize Pygame
 pygame.init()
@@ -24,6 +25,18 @@ pygame.display.set_caption("Tower Defense")
 pygame_icon = pygame.image.load('resources/background/icon.png')
 pygame.display.set_icon(pygame_icon)
 place_map = pygame.transform.scale(pygame.image.load('resources/background/place_map.png'), (960,960))
+sell_map = pygame.transform.scale(pygame.image.load('resources/background/sell_map.png'), (960,960))
+upgrade_map = pygame.transform.scale(pygame.image.load('resources/background/upgrade.png'), (960,960))
+upgrade_map = pygame.transform.scale(pygame.image.load('resources/background/upgrade.png'), (960,960))
+pop_up = pygame.transform.scale(pygame.image.load('resources/background/maxresdefault.jpg'), (960,960))
+pop_up.set_alpha(50)
+
+
+
+#background music
+mixer.music.load('resources/SCP_ wish I knew.mp3')
+mixer.music.play(-1)
+
 
 # Clock for FPS
 clock = pygame.time.Clock()
@@ -44,6 +57,8 @@ game_over = False
 game_won = False
 selected_tower = None
 tower_placement_mode = False
+sell_mode = False
+upgrade_mode = False
 current_wave_time = 0
 wave_complete = False
 last_wave_time = 0
@@ -96,138 +111,141 @@ def show_menu():
 def grid_snap(mouse_x, mouse_y):
     """Snap coordinates to grid for tower placement"""
     if 102 <= mouse_x <= 192 and 102 <= mouse_y <= 192:
-        grid_x = 147
-        grid_y = 147
+        grid_x = 114
+        grid_y = 114
     elif 198 <= mouse_x <= 288 and 102 <= mouse_y <= 192:
-        grid_x = 249
-        grid_y = 147
+        grid_x = 210
+        grid_y = 114
     elif 294 <= mouse_x <= 384 and 102 <= mouse_y <= 192:
-        grid_x = 351
-        grid_y = 147
+        grid_x = 306
+        grid_y = 114
     elif 390 <= mouse_x <= 480 and 102 <= mouse_y <= 192:
-        grid_x = 453
-        grid_y = 147
+        grid_x = 402
+        grid_y = 114
     elif 486 <= mouse_x <= 576 and 102 <= mouse_y <= 192:
-        grid_x = 555
-        grid_y = 147
+        grid_x = 498
+        grid_y = 114
     elif 582 <= mouse_x <= 672 and 102 <= mouse_y <= 192:
-        grid_x = 657
-        grid_y = 147
+        grid_x = 594
+        grid_y = 114
     elif 678 <= mouse_x <= 768 and 102 <= mouse_y <= 192:
-        grid_x = 759
-        grid_y = 147
+        grid_x = 690
+        grid_y = 114
     elif 774 <= mouse_x <= 864 and 102 <= mouse_y <= 192:
-        grid_x = 861
-        grid_y = 147
+        grid_x = 786
+        grid_y = 114
     #second row of spots
     elif 102 <= mouse_x <= 192 and 198 <= mouse_y <= 288:
-        grid_x = 147
-        grid_y = 249
+        grid_x = 114
+        grid_y = 210
     #third row of spots
     elif 102 <= mouse_x <= 192 and 294 <= mouse_y <= 384:
-        grid_x = 147
-        grid_y = 351
+        grid_x = 114
+        grid_y = 306
     elif 294 <= mouse_x <= 384 and 294 <= mouse_y <= 384:
-        grid_x = 351
-        grid_y = 351
+        grid_x = 306
+        grid_y = 306
     elif 390 <= mouse_x <= 480 and 294 <= mouse_y <= 384:
-        grid_x = 453
-        grid_y = 351
+        grid_x = 402
+        grid_y = 306
     elif 486 <= mouse_x <= 576 and 294 <= mouse_y <= 384:
-        grid_x = 555
-        grid_y = 351
+        grid_x = 498
+        grid_y = 306
     elif 582 <= mouse_x <= 672 and 294 <= mouse_y <= 384:
-        grid_x = 657
-        grid_y = 351
+        grid_x = 594
+        grid_y = 306
     elif 678 <= mouse_x <= 768 and 294 <= mouse_y <= 384:
-        grid_x = 759
-        grid_y = 351
+        grid_x = 690
+        grid_y = 306
     elif 774 <= mouse_x <= 864 and 294 <= mouse_y <= 384:
-        grid_x = 861
-        grid_y = 351
+        grid_x = 786
+        grid_y = 306
     #fourth row of spots
     elif 102 <= mouse_x <= 192 and 390 <= mouse_y <= 480:
-        grid_x = 147
-        grid_y = 453
+        grid_x = 114
+        grid_y = 402
     elif 294 <= mouse_x <= 384 and 390 <= mouse_y <= 480:
-        grid_x = 351
-        grid_y = 453
+        grid_x = 306
+        grid_y = 402
     elif 390 <= mouse_x <= 480 and 390 <= mouse_y <= 480:
-        grid_x = 453
-        grid_y = 453
+        grid_x = 402
+        grid_y = 402
     elif 486 <= mouse_x <= 576 and 390 <= mouse_y <= 480:
-        grid_x = 555
-        grid_y = 453
+        grid_x = 498
+        grid_y = 402
+    elif 582 <= mouse_x <= 672 and 390 <= mouse_y <= 480:
+        grid_x = 594
+        grid_y = 402
     elif 678 <= mouse_x <= 768 and 390 <= mouse_y <= 480:
-        grid_x = 759
-        grid_y = 453
+        grid_x = 690
+        grid_y = 402
     elif 774 <= mouse_x <= 864 and 390 <= mouse_y <= 480:
-        grid_x = 861
-        grid_y = 453
+        grid_x = 786
+        grid_y = 402
     #fifth row of spots
     elif 102 <= mouse_x <= 192 and 486 <= mouse_y <= 576:
-        grid_x = 147
-        grid_y = 555
+        grid_x = 114
+        grid_y = 498
     elif 774 <= mouse_x <= 864 and 486 <= mouse_y <= 576:
-        grid_x = 861
-        grid_y = 555
+        grid_x = 786
+        grid_y = 498
     #sixth row of spots
     elif 102 <= mouse_x <= 192 and 582 <= mouse_y <= 672:
-        grid_x = 147
-        grid_y = 657
+        grid_x = 114
+        grid_y = 594
     elif 198 <= mouse_x <= 288 and 582 <= mouse_y <= 672:
-        grid_x = 249
-        grid_y = 657
+        grid_x = 210
+        grid_y = 594
     elif 294 <= mouse_x <= 384 and 582 <= mouse_y <= 672:
-        grid_x = 351
-        grid_y = 657
+        grid_x = 306
+        grid_y = 594
     elif 390 <= mouse_x <= 480 and 582 <= mouse_y <= 672:
-        grid_x = 453
-        grid_y = 657
+        grid_x = 402
+        grid_y = 594
     elif 486 <= mouse_x <= 576 and 582 <= mouse_y <= 672:
-        grid_x = 555
-        grid_y = 657
+        grid_x = 498
+        grid_y = 594
     elif 582 <= mouse_x <= 672 and 582 <= mouse_y <= 672:
-        grid_x = 657
-        grid_y = 657
+        grid_x = 594
+        grid_y = 594
     elif 774 <= mouse_x <= 864 and 582 <= mouse_y <= 672:
-        grid_x = 861
-        grid_y = 657
+        grid_x = 786
+        grid_y = 594
     #seventh row of spots
     elif 102 <= mouse_x <= 192 and 678 <= mouse_y <= 768:
-        grid_x = 147
-        grid_y = 759
+        grid_x = 114
+        grid_y = 690
     elif 198 <= mouse_x <= 288 and 678 <= mouse_y <= 768:
-        grid_x = 249
-        grid_y = 759
+        grid_x = 210
+        grid_y = 690
     elif 294 <= mouse_x <= 384 and 678 <= mouse_y <= 768:
-        grid_x = 351
-        grid_y = 759
+        grid_x = 306
+        grid_y = 690
     elif 774 <= mouse_x <= 864 and 678 <= mouse_y <= 768:
-        grid_x = 861
-        grid_y = 759
+        grid_x = 786
+        grid_y = 690
     #eighth row of spots
     elif 102 <= mouse_x <= 192 and 774 <= mouse_y <= 864:
-        grid_x = 147
-        grid_y = 861
+        grid_x = 114
+        grid_y = 786
     elif 198 <= mouse_x <= 288 and 774 <= mouse_y <= 864:
-        grid_x = 249
-        grid_y = 861
+        grid_x = 210
+        grid_y = 786
     elif 294 <= mouse_x <= 384 and 774 <= mouse_y <= 864:
-        grid_x = 351
-        grid_y = 861
+        grid_x = 306
+        grid_y = 786
     elif 486 <= mouse_x <= 576 and 774 <= mouse_y <= 864:
-        grid_x = 555
-        grid_y = 861
+        grid_x = 498
+        grid_y = 786
     elif 582 <= mouse_x <= 672 and 774 <= mouse_y <= 864:
-        grid_x = 657
-        grid_y = 861
+        grid_x = 594
+        grid_y = 786
     elif 678 <= mouse_x <= 768 and 774 <= mouse_y <= 864:
-        grid_x = 759
-        grid_y = 861
+        grid_x = 690
+        grid_y = 786
     elif 774 <= mouse_x <= 864 and 774 <= mouse_y <= 864:
-        grid_x = 861
-        grid_y = 861
+        grid_x = 786
+        grid_y = 786
     else:
         grid_x = None
         grid_y = None
@@ -255,7 +273,7 @@ def handle_tower_placement(mouse_pos):
             selected_tower = None
 
 def handle_key_press(event):
-    global tower_placement_mode, selected_tower
+    global tower_placement_mode, selected_tower, sell_mode, upgrade_mode
     """Handle keyboard input for tower selection"""
     
     if event.type == pygame.KEYDOWN:
@@ -271,9 +289,43 @@ def handle_key_press(event):
         if event.key in tower_map:
             selected_tower = tower_map[event.key]
             tower_placement_mode = True
+        elif event.key == pygame.K_BACKSPACE:
+            sell_mode = True
+        elif event.key == pygame.K_UP:
+            upgrade_mode = True
         elif event.key == pygame.K_ESCAPE:
+            upgrade_mode = False
+            sell_mode = False
             tower_placement_mode = False
             selected_tower = None
+
+def sell_tower(position):
+    global sell_mode, money
+    #check if selling is possible
+    if len(game.towers) > 0:
+        mouse_x, mouse_y = position
+        grid_x, grid_y = grid_snap(mouse_x, mouse_y)
+                
+        if grid_x is not None and grid_y is not None:
+            for tower in game.towers:
+                if tower.x == grid_x and tower.y == grid_y:
+                    money += tower.cost*0.75
+                    game.towers.remove(tower)
+    sell_mode = False
+        
+def upgrade_tower(position):
+    global upgrade_mode, money
+    #check if upgrade is possible
+    if len(game.towers) > 0:
+        mouse_x, mouse_y = position
+        grid_x, grid_y = grid_snap(mouse_x, mouse_y)
+                
+        if grid_x is not None and grid_y is not None:
+            for tower in game.towers:
+                if tower.x == grid_x and tower.y == grid_y:
+                    if money >= tower.cost*2 and tower.hit_speed > 0.25:
+                         money = tower.upgrade(money)
+    upgrade_mode = False
 
 # Main game loop
 running = True
@@ -332,6 +384,7 @@ while running:
                 enemies_spawn.append(Enemy4())
         elif wave == 20 and len(enemies_spawn) == 0 and len(enemies) == 0:
             enemies_spawn.append(Boss())
+        
         # Tower placement mode
         if tower_placement_mode == True:
             screen.blit(place_map, (0,0))
@@ -349,7 +402,15 @@ while running:
                     
                     # Draw range circle
                     pygame.draw.circle(screen, (100, 200, 100), (grid_x + 30, grid_y + 30), selected_tower.range_radius, 1)
-        
+
+        #selling mode
+        if sell_mode == True:
+            screen.blit(sell_map, (0,0))
+
+        #upgrade mode
+        if upgrade_mode == True:
+            screen.blit(upgrade_map, (0,0))           
+                    
         
         
         
@@ -390,7 +451,14 @@ while running:
             if event.type == pygame.MOUSEBUTTONDOWN and tower_placement_mode:
                 if event.button == 1:  # Left click
                     handle_tower_placement(event.pos)
-    
+            if event.type == pygame.MOUSEBUTTONDOWN and sell_mode:
+                if event.button == 1:  # Left click
+                    sell_tower(event.pos)
+            if event.type == pygame.MOUSEBUTTONDOWN and upgrade_mode:
+                if event.button == 1:  # Left click
+                    upgrade_tower(event.pos)
+                    
+    screen.blit(pop_up, (0,0))
     pygame.display.flip()
 
     for event in pygame.event.get():
