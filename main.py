@@ -15,7 +15,7 @@ FPS = 60
 # Initialize game
 game = Map()
 
-
+print("Numbers for towers, backspace for sell, up for upgrading")
 # Set background
 background = game.image
 
@@ -323,8 +323,8 @@ def upgrade_tower(position):
         if grid_x is not None and grid_y is not None:
             for tower in game.towers:
                 if tower.x == grid_x and tower.y == grid_y:
-                    if money >= tower.cost*2 and tower.hit_speed > 0.25:
-                         money = tower.upgrade(money)
+                    if money >= tower.cost*3 and tower.hit_speed > 0.25:
+                        money = tower.upgrade(money)
     upgrade_mode = False
 
 # Main game loop
