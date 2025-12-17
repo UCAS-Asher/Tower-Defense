@@ -424,7 +424,7 @@ while running:
                 health -= (enemy.max_hp/2)
                 enemies.remove(enemy)
             elif enemy.hp < 0:
-                money += (enemy.max_hp/2)
+                money += enemy.give_money(money)
                 enemies.remove(enemy)
         
         # Tower shooting

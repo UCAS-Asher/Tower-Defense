@@ -72,44 +72,49 @@ class Enemy(ABC):
 
 
 class Enemy1(Enemy):
-    def __init__(self, hp = 100, max_hp = 100, speed = 1, x=410.5, y=836.5):
+    def __init__(self, hp = 250, max_hp = 250, speed = 1, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy1.png'), (45,45))
-    
-    def give_money(self, user):
-        user.add_money(int(self.max_hp*0.5))
+
+    def give_money(self, money):
+        money += (int(self.max_hp*0.2))
+        return money
 
 class Enemy2(Enemy):
-    def __init__(self, hp = 200, max_hp = 300, speed = 1, x=410.5, y=836.5):
+    def __init__(self, hp = 1500, max_hp = 1500, speed = 1, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy2.png'), (50,50))
-    
-    def give_money(self, user):
-        user.add_money(int(self.max_hp*0.35))
+
+    def give_money(self, money):
+        money += (int(self.max_hp*0.2))
+        return money
 
 class Enemy3(Enemy):
-    def __init__(self, hp = 500, max_hp = 900, speed = 1, x=410.5, y=836.5):
+    def __init__(self, hp = 8000, max_hp = 8000, speed = 2, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy3.png'), (55,55))
     
-    def give_money(self, user):
-        user.add_money(int(self.max_hp*0.3))
+    def give_money(self, money):
+        money += (int(self.max_hp*0.25))
+        return money
 
 class Enemy4(Enemy):
-    def __init__(self, hp = 1500, max_hp = 1800, speed = 1, x=410.5, y=836.5):
+    def __init__(self, hp = 24000, max_hp = 24000, speed = 2, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/enemy4.png'), (60,60))
     
-    def give_money(self, user):
-        user.add_money(int(self.max_hp*0.25))
+    def give_money(self, money):
+        money += (int(self.max_hp*0.3))
+        return money
 
 class Boss(Enemy):
-    def __init__(self, hp = 15000, max_hp = 20000, speed = 0.5, x=410.5, y=836.5):
+    def __init__(self, hp = 500000, max_hp = 5000000, speed = 0.5, x=410.5, y=836.5):
         super().__init__(hp, max_hp, speed, x, y)
         self.image = pygame.transform.scale(pygame.image.load('resources/enemies/boss.png'), (65,65))
     
-    def give_money(self, user):
-        user.add_money(int(self.max_hp*100000000000000000000000000000000000000000000000000))
+    def give_money(self, money):
+        money += (int(self.max_hp*100000000000000000000000000000000000000000000000000))
+        return money
 
 
 
